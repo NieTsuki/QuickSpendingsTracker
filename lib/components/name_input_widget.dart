@@ -1,7 +1,5 @@
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'name_input_model.dart';
 export 'name_input_model.dart';
 
 class NameInputWidget extends StatefulWidget {
@@ -19,43 +17,31 @@ class NameInputWidget extends StatefulWidget {
 }
 
 class _NameInputWidgetState extends State<NameInputWidget> {
-  late NameInputModel _model;
-
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-    _model.onUpdate();
-  }
+  late final TextEditingController textController;
+  late final FocusNode textFieldFocusNode;
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => NameInputModel());
 
-    _model.textController ??= TextEditingController(text: widget.text);
-    _model.textFieldFocusNode ??= FocusNode();
-    _model.textFieldFocusNode!.addListener(() {
-      final value = _model.textController!.value.text;
+    textController = TextEditingController(text: widget.text);
+
+    textFieldFocusNode = FocusNode();
+    textFieldFocusNode.addListener(() {
+      final value = textController.value.text;
       widget.onChanged(value);
     });
   }
 
   @override
-  void dispose() {
-    _model.maybeDispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _model.textController.text = widget.text;
+    textController.text = widget.text;
 
     return Container(
       width: 200.0,
       child: TextFormField(
-        controller: _model.textController,
-        focusNode: _model.textFieldFocusNode,
+        controller: textController,
+        focusNode: textFieldFocusNode,
         autofocus: false,
         obscureText: false,
         decoration: InputDecoration(
@@ -104,7 +90,6 @@ class _NameInputWidgetState extends State<NameInputWidget> {
               letterSpacing: 0.0,
             ),
         cursorColor: FlutterFlowTheme.of(context).primaryText,
-        validator: _model.textControllerValidator.asValidator(context),
       ),
     );
   }
