@@ -76,8 +76,8 @@ String? serializeParam(
       case ParamType.Enum:
         data = (param is Enum) ? param.serialize() : null;
 
-      default:
-        data = null;
+      // default:
+      //   data = null;
     }
     return data;
   } catch (e) {
@@ -218,8 +218,8 @@ dynamic deserializeParam<T>(
       case ParamType.Enum:
         return deserializeEnum<T>(param);
 
-      default:
-        return null;
+      // default:
+      //   return null;
     }
   } catch (e) {
     print('Error deserializing parameter: $e');
