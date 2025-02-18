@@ -374,13 +374,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   color: FlutterFlowTheme.of(context).error,
                                   size: 24.0,
                                 ),
-                                onPressed: true
-                                    ? null
-                                    : () async {
-                                        _model.removeAtIndexFromRecords(
-                                            recsIndex);
-                                        safeSetState(() {});
-                                      },
+                                onPressed: () async {
+                                  _model.removeAtIndexFromRecords(
+                                      recsIndex);
+                                  safeSetState(() {});
+                                },
                               ),
                             ),
                           ].map((c) => DataCell(c)).toList(),
