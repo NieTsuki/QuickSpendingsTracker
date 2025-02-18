@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import '/backend/schema/enums/enums.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/amount_input_widget.dart';
@@ -55,27 +56,59 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            _model.isTableHidden = true;
-            safeSetState(() {});
-            _model.addToRecords(RecordStruct(
-              timestamp: getCurrentTimestamp,
-              name: '',
-              amount: 0.0,
-              method: PaymentMethod.Cash,
-            ));
-            sortRecordsByTimestamp();
-            await Future.delayed(const Duration(milliseconds: 100));
-            _model.isTableHidden = false;
-            safeSetState(() {});
-          },
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          elevation: 8.0,
-          child: Icon(
-            Icons.add_rounded,
-            color: FlutterFlowTheme.of(context).info,
-            size: 24.0,
+        floatingActionButton: Container(
+          child: Row(
+            spacing: 20,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: () async {
+                  final List<String> rows = [];
+
+                  for (RecordStruct record in _model.records) {
+                    rows.add(
+                      "${dateTimeFormat('MMM d y', record.timestamp)}, "
+                      "${dateTimeFormat('h:mm a', record.timestamp)}, "
+                      "${record.name}, "
+                      "${record.amount}, "
+                      "${record.method?.name}"
+                    );
+                  }
+
+                  await Clipboard.setData(ClipboardData(text: rows.join("\n")));
+                },
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+                elevation: 8.0,
+                child: Icon(
+                  Icons.content_copy_rounded,
+                  color: FlutterFlowTheme.of(context).info,
+                  size: 24.0,
+                ),
+              ),
+              FloatingActionButton(
+                onPressed: () async {
+                  _model.isTableHidden = true;
+                  safeSetState(() {});
+                  _model.addToRecords(RecordStruct(
+                    timestamp: getCurrentTimestamp,
+                    name: '',
+                    amount: 0.0,
+                    method: PaymentMethod.Cash,
+                  ));
+                  sortRecordsByTimestamp();
+                  await Future.delayed(const Duration(milliseconds: 100));
+                  _model.isTableHidden = false;
+                  safeSetState(() {});
+                },
+                backgroundColor: FlutterFlowTheme.of(context).primary,
+                elevation: 8.0,
+                child: Icon(
+                  Icons.add_rounded,
+                  color: FlutterFlowTheme.of(context).info,
+                  size: 24.0,
+                ),
+              ),
+            ],
           ),
         ),
         body: SafeArea(
