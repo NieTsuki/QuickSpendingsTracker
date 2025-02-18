@@ -205,7 +205,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
-                                final _datePickedDate = await showDatePicker(
+                                final DateTime _datePickedDate = await showDatePicker(
                                   context: context,
                                   barrierDismissible: false,
                                   initialDate:
@@ -245,69 +245,60 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       iconSize: 24.0,
                                     );
                                   },
-                                );
+                                ) ?? DateTime.now();
 
-                                TimeOfDay? _datePickedTime;
-                                if (_datePickedDate != null) {
-                                  _datePickedTime = await showTimePicker(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    initialTime: TimeOfDay.fromDateTime(
-                                        (recsItem.timestamp ?? DateTime.now())),
-                                    builder: (context, child) {
-                                      return wrapInMaterialTimePickerTheme(
-                                        context,
-                                        child!,
-                                        headerBackgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                        headerForegroundColor:
-                                            FlutterFlowTheme.of(context).info,
-                                        headerTextStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .headlineLarge
-                                                .override(
-                                                  fontFamily: 'Urbanist',
-                                                  fontSize: 32.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                        pickerBackgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                        pickerForegroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                        selectedDateTimeBackgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                        selectedDateTimeForegroundColor:
-                                            FlutterFlowTheme.of(context).info,
-                                        actionButtonForegroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                        iconSize: 24.0,
-                                      );
-                                    },
-                                  );
-                                }
-
-                                if (_datePickedDate != null &&
-                                    _datePickedTime != null) {
-                                  safeSetState(() {
-                                    _model.datePicked = DateTime(
-                                      _datePickedDate.year,
-                                      _datePickedDate.month,
-                                      _datePickedDate.day,
-                                      _datePickedTime!.hour,
-                                      _datePickedTime.minute,
+                                final TimeOfDay _datePickedTime = await showTimePicker(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  initialTime: TimeOfDay.fromDateTime(
+                                      (recsItem.timestamp ?? DateTime.now())),
+                                  builder: (context, child) {
+                                    return wrapInMaterialTimePickerTheme(
+                                      context,
+                                      child!,
+                                      headerBackgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .primary,
+                                      headerForegroundColor:
+                                          FlutterFlowTheme.of(context).info,
+                                      headerTextStyle:
+                                          FlutterFlowTheme.of(context)
+                                              .headlineLarge
+                                              .override(
+                                                fontFamily: 'Urbanist',
+                                                fontSize: 32.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                      pickerBackgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                      pickerForegroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                      selectedDateTimeBackgroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .primary,
+                                      selectedDateTimeForegroundColor:
+                                          FlutterFlowTheme.of(context).info,
+                                      actionButtonForegroundColor:
+                                          FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                      iconSize: 24.0,
                                     );
-                                  });
-                                } else if (_model.datePicked != null) {
-                                  safeSetState(() {
-                                    _model.datePicked = recsItem.timestamp;
-                                  });
-                                }
+                                  },
+                                ) ?? TimeOfDay.now();
+
+                                safeSetState(() {
+                                  _model.datePicked = DateTime(
+                                    _datePickedDate.year,
+                                    _datePickedDate.month,
+                                    _datePickedDate.day,
+                                    _datePickedTime.hour,
+                                    _datePickedTime.minute,
+                                  );
+                                });
+
                                 _model.updateRecordsAtIndex(
                                   recsIndex,
                                   (e) => e..timestamp = _model.datePicked,
