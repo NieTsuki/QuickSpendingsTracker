@@ -363,6 +363,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 key: Key(
                                   'Keyycg_${recsIndex.toString()}',
                                 ),
+                                option: recsItem.method ?? PaymentMethod.Cash,
+                                onChanged: (PaymentMethod value) {
+                                  recsItem.method = value;
+                                  safeSetState(() {});
+                                },
                               ),
                             ),
                             Align(

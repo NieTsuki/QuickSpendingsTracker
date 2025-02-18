@@ -8,7 +8,14 @@ import 'payment_method_drop_down_model.dart';
 export 'payment_method_drop_down_model.dart';
 
 class PaymentMethodDropDownWidget extends StatefulWidget {
-  const PaymentMethodDropDownWidget({super.key});
+  const PaymentMethodDropDownWidget({
+    super.key,
+    required this.option,
+    required this.onChanged,
+  });
+
+  final PaymentMethod option;
+  final void Function(PaymentMethod) onChanged;
 
   @override
   State<PaymentMethodDropDownWidget> createState() =>
@@ -40,15 +47,22 @@ class _PaymentMethodDropDownWidgetState
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () {
+      _model.dropDownValueController?.value = widget.option.name;
+    });
+
     return Align(
       alignment: AlignmentDirectional(-1.0, 0.0),
       child: FlutterFlowDropDown<String>(
         controller: _model.dropDownValueController ??=
             FormFieldController<String>(
-          _model.dropDownValue ??= PaymentMethod.Cash.name,
+          _model.dropDownValue ??= widget.option.name,
         ),
         options: PaymentMethod.values.map((e) => e.name).toList(),
-        onChanged: (val) => safeSetState(() => _model.dropDownValue = val),
+        onChanged: (val) => safeSetState(() {
+          _model.dropDownValue = val;
+          widget.onChanged(PaymentMethod.values.byName(val!));
+        }),
         width: 200.0,
         height: 40.0,
         textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
