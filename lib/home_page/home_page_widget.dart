@@ -203,9 +203,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   barrierDismissible: false,
                                   initialDate:
                                       (recsItem.timestamp ?? DateTime.now()),
-                                  firstDate: DateTime(1900),
-                                  lastDate:
-                                      (recsItem.timestamp ?? DateTime.now()),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime.now(),
                                   builder: (context, child) {
                                     return wrapInMaterialDatePickerTheme(
                                       context,
