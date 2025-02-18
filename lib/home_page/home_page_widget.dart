@@ -39,6 +39,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     super.dispose();
   }
 
+  void sortRecordsByTimestamp() {
+    _model.records.sort((a, b) {
+      return a.timestamp!.compareTo(b.timestamp!);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -59,7 +65,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               amount: 0.0,
               method: PaymentMethod.Cash,
             ));
-            await Future.delayed(const Duration(milliseconds: 10));
+            sortRecordsByTimestamp();
+            await Future.delayed(const Duration(milliseconds: 100));
             _model.isTableHidden = false;
             safeSetState(() {});
           },
@@ -305,6 +312,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   recsIndex,
                                   (e) => e..timestamp = _model.datePicked,
                                 );
+                                sortRecordsByTimestamp();
+
                                 safeSetState(() {});
                               },
                               child: Text(
