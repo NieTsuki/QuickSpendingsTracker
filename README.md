@@ -1,7 +1,4 @@
-# Quick Spendings Tracker
+### A quick little project to help me.
+Feel free to contribute if you want :)
 
-A new Flutter project.
-
-## Getting Started
-
-FlutterFlow projects are built to run on the Flutter _stable_ release.
+![Screenshot 2025-02-18 225749](https://github.com/user-attachments/assets/43347f41-9792-4802-8b78-bb45a137f969)
