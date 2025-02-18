@@ -82,6 +82,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   child: Builder(
                     builder: (context) {
                       final recs = _model.records.toList();
+
                       if (recs.isEmpty) {
                         return Center(
                           child: EmptyRecordsMessageWidget(),
@@ -344,11 +345,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 key: Key(
                                   'Keyygo_${recsIndex.toString()}',
                                 ),
-                                parameter1: formatNumber(
-                                  recsItem.amount,
-                                  formatType: FormatType.decimal,
-                                  decimalType: DecimalType.automatic,
-                                ),
+                                value: recsItem.amount,
+                                onChanged: (double value) {
+                                  recsItem.amount = value;
+                                  safeSetState(() {});
+                                },
                               ),
                             ),
                             wrapWithModel(

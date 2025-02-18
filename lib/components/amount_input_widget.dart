@@ -1,53 +1,56 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'amount_input_model.dart';
 export 'amount_input_model.dart';
 
 class AmountInputWidget extends StatefulWidget {
   const AmountInputWidget({
     super.key,
-    this.parameter1,
+    required this.value,
+    required this.onChanged,
   });
 
-  final String? parameter1;
+  final double value;
+  final void Function(double) onChanged;
 
   @override
   State<AmountInputWidget> createState() => _AmountInputWidgetState();
 }
 
 class _AmountInputWidgetState extends State<AmountInputWidget> {
-  late AmountInputModel _model;
+  late final TextEditingController textController;
+  late final FocusNode textFieldFocusNode;
 
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-    _model.onUpdate();
+  String _convertValue() {
+    return formatNumber(
+      widget.value,
+      formatType: FormatType.decimal,
+      decimalType: DecimalType.automatic,
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => AmountInputModel());
 
-    _model.textController ??= TextEditingController(text: widget!.parameter1);
-    _model.textFieldFocusNode ??= FocusNode();
-  }
+    textController = TextEditingController(text: _convertValue());
 
-  @override
-  void dispose() {
-    _model.maybeDispose();
-
-    super.dispose();
+    textFieldFocusNode = FocusNode();
+    textFieldFocusNode.addListener(() {
+      final value = textController.value.text;
+      widget.onChanged(double.parse(value));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    textController.text = _convertValue();
+
     return Container(
       width: 200.0,
       child: TextFormField(
-        controller: _model.textController,
-        focusNode: _model.textFieldFocusNode,
+        controller: textController,
+        focusNode: textFieldFocusNode,
         autofocus: false,
         obscureText: false,
         decoration: InputDecoration(
@@ -97,7 +100,6 @@ class _AmountInputWidgetState extends State<AmountInputWidget> {
             ),
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         cursorColor: FlutterFlowTheme.of(context).primaryText,
-        validator: _model.textControllerValidator.asValidator(context),
       ),
     );
   }
