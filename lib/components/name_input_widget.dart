@@ -7,10 +7,12 @@ export 'name_input_model.dart';
 class NameInputWidget extends StatefulWidget {
   const NameInputWidget({
     super.key,
-    this.parameter1,
+    required this.text,
+    required this.onChanged,
   });
 
-  final String? parameter1;
+  final String text;
+  final void Function(String) onChanged;
 
   @override
   State<NameInputWidget> createState() => _NameInputWidgetState();
@@ -30,8 +32,12 @@ class _NameInputWidgetState extends State<NameInputWidget> {
     super.initState();
     _model = createModel(context, () => NameInputModel());
 
-    _model.textController ??= TextEditingController(text: widget!.parameter1);
+    _model.textController ??= TextEditingController(text: widget.text);
     _model.textFieldFocusNode ??= FocusNode();
+    _model.textFieldFocusNode!.addListener(() {
+      final value = _model.textController!.value.text;
+      widget.onChanged(value);
+    });
   }
 
   @override
@@ -43,6 +49,8 @@ class _NameInputWidgetState extends State<NameInputWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _model.textController.text = widget.text;
+
     return Container(
       width: 200.0,
       child: TextFormField(

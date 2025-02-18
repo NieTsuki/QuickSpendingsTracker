@@ -332,7 +332,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 key: Key(
                                   'Keyq3k_${recsIndex.toString()}',
                                 ),
-                                parameter1: recsItem.name,
+                                text: recsItem.name,
+                                onChanged: (String value) {
+                                  recsItem.name = value;
+                                  safeSetState(() {});
+                                },
                               ),
                             ),
                             wrapWithModel(
