@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:quick_spendings_tracker/backend/schema/structs/record_struct.dart';
+import 'package:quick_spendings_tracker/flutter_flow/custom_functions.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/nav/nav.dart';
@@ -12,11 +14,16 @@ void main() async {
 
   await FlutterFlowTheme.initialize();
 
-  runApp(MyApp());
+  runApp(MyApp(await loadRecords()));
 }
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+
+  const MyApp(this.initialRecords);
+
+  final List<RecordStruct> initialRecords;
+
   @override
   State<MyApp> createState() => _MyAppState();
 
@@ -43,7 +50,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     _appStateNotifier = AppStateNotifier.instance;
-    _router = createRouter(_appStateNotifier);
+    _router = createRouter(_appStateNotifier, widget.initialRecords);
   }
 
   void setThemeMode(ThemeMode mode) => safeSetState(() {

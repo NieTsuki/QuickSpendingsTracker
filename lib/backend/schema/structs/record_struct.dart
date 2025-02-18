@@ -2,7 +2,7 @@
 
 import '/backend/schema/util/schema_util.dart';
 import '/backend/schema/enums/enums.dart';
-
+import 'dart:convert';
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -46,6 +46,17 @@ class RecordStruct extends BaseStruct {
   set method(PaymentMethod? val) => _method = val;
 
   bool hasMethod() => _method != null;
+
+  static RecordStruct fromString(String string) {
+    final data = json.decode(string);
+
+    return RecordStruct(
+      timestamp: DateTime.fromMillisecondsSinceEpoch(int.parse(data["timestamp"])),
+      name: data["name"],
+      amount: double.parse(data["amount"]),
+      method: PaymentMethod.values.byName(data["method"]),
+    );
+  }
 
   static RecordStruct fromMap(Map<String, dynamic> data) => RecordStruct(
         timestamp: data['timestamp'] as DateTime?,

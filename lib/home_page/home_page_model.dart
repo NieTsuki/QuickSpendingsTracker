@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   ///  Local state fields for this page.
 
-  List<RecordStruct> records = [];
+  HomePageModel(this.records);
+
+  List<RecordStruct> records;
   void addToRecords(RecordStruct item) => records.add(item);
   void removeFromRecords(RecordStruct item) => records.remove(item);
   void removeAtIndexFromRecords(int index) => records.removeAt(index);

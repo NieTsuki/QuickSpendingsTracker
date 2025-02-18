@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:quick_spendings_tracker/flutter_flow/custom_functions.dart';
 import '/backend/schema/enums/enums.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/amount_input_widget.dart';
@@ -16,7 +17,9 @@ import 'home_page_model.dart';
 export 'home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({super.key});
+  const HomePageWidget({ super.key, required this.initialRecords });
+
+  final List<RecordStruct> initialRecords;
 
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
@@ -30,7 +33,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => HomePageModel());
+    _model = createModel(context, () => HomePageModel(widget.initialRecords));
   }
 
   @override
@@ -48,6 +51,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    saveRecords(_model.records);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
